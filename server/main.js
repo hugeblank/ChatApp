@@ -1,5 +1,6 @@
 const os = require('os');
 const nodeLoop = require('node-gameloop');
+const CommandHandler = require('../libcommand/src/CommandHandler');
 
 class Server
 {
@@ -16,6 +17,9 @@ class Server
         // Server Variables
         this.id = 0;
         this.tick = 0;
+
+        // Handlers
+        this.commands = new CommandHandler(this);
 
     }
 

@@ -6,5 +6,10 @@
         "Tick": 50,
         "LogMessages": true,
         "Prefix": "-"
+    },
+    
+    "Logger":
+    {
+        "Prompt": ">"
     }
 }
