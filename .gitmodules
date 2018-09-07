@@ -1,0 +1,3 @@
+[submodule "libbinary"]
+	path = src
+	url = git@github.com:ChicoCSCI/libbinary.git
