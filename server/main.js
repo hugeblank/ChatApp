@@ -1,6 +1,7 @@
 const os = require('os');
 const serverLoop = require('node-gameloop');
 const CommandHandler = require('../libcommand/src/CommandHandler');
+const WebSocket = require('ws');
 
 class Server
 {
@@ -47,6 +48,30 @@ class Server
         Logger.info(`Took ${process.uptime()} seconds to start`);
         Logger.info(`Type 'help' or '?' for commands \n`)
 
+        this.startSocketServer();
+
+    }
+
+    startSocketServer()
+    {
+        this.ws = new WebSocket.Server(
+            {
+                perMessageDeflate: false, 
+                port: Config.Server.WebSocket.Port
+            }, this.handleStart.bind(this)
+        );
+    }
+
+    handleStart()
+    {
+        Logger.print(`WebSocket Server started on port ${Config.Server.WebSocket.Port}`);
+        this.ws.on('connection', this.handleConnection.bind(this));
+    }
+
+    handleConnection(conn)
+    {
+        let clientAddr = conn.upgradeReq.connection.remoteAddress;
+        Logger.info(`Got connection from address ${clientAddr}`);
     }
 
     serverLoop()
