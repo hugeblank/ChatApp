@@ -1,5 +1,5 @@
 const os = require('os');
-const nodeLoop = require('node-gameloop');
+const serverLoop = require('node-gameloop');
 const CommandHandler = require('../libcommand/src/CommandHandler');
 
 class Server
@@ -36,7 +36,7 @@ class Server
         Logger.prompt(this.commands.handleCommand.bind(this.commands), Config.Logger.Prompt);
 
         // Good solution for minimal CPU usage
-        this.loop = nodeLoop.setGameLoop(this.loop.bind(this), Config.Server.Tick);
+        this.loop = serverLoop.setGameLoop(this.serverLoop.bind(this), Config.Server.Tick);
 
         // System info debug
         Logger.info(`OS: ${os.platform()}`);
@@ -47,6 +47,16 @@ class Server
         Logger.info(`Took ${process.uptime()} seconds to start`);
         Logger.info(`Type 'help' or '?' for commands \n`)
 
+    }
+
+    serverLoop()
+    {
+        if (this.tick >= 10)
+        {
+            this.tick = 0;
+        }
+
+        this.tick++;
     }
 }
 
