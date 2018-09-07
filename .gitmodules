@@ -1,3 +1,6 @@
 [submodule "libbinary"]
 	path = libbinary
 	url = https://github.com/ChicoCSCI/libbinary.git
+[submodule "liblogger"]
+	path = liblogger
+	url = https://github.com/ChicoCSCI/liblogger.git
