@@ -4,3 +4,6 @@
 [submodule "liblogger"]
 	path = liblogger
 	url = https://github.com/ChicoCSCI/liblogger.git
+[submodule "libcommand"]
+	path = libcommand
+	url = https://github.com/ChicoCSCI/libcommand.git
