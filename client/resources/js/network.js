@@ -17,8 +17,7 @@ class Network {
 
     onOpen()
     {
-        $('#chatArea').fadeIn();
-        this.sendName();
+        this.fadeIn('chatArea');
     }
 
     onMessage(msg)
@@ -30,9 +29,47 @@ class Network {
         console.log(`Recieved id ${id}`);
     }
 
+    reConn()
+    {
+        if (this.socket.readyState == 1)
+        {
+            this.initialize();
+        }
+        else
+        {
+            this.onOpen();
+        }
+    }
+
     onError(e)
     {
         this.onClose(e, true);
+    }
+
+    onClose(e, isError)
+    {
+        if (e.code || e.reason)
+        {
+            console.log(`Socket Closed! Reason ${e.code} : ${e.reason}`);
+            this.reConn();
+        } 
+        else 
+        {
+            console.log("Socket Error!");
+        }
+
+        this.fadeOut('chatArea');
+        this.fadeIn('loginArea');
+    }
+
+    fadeIn(domId)
+    {
+        $(`#${domId}`).fadeIn();
+    }
+
+    fadeOut(domId)
+    {
+        $(`#${domId}`).fadeOut();
     }
 
     prepPacket(len)
