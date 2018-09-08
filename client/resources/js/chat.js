@@ -25,7 +25,7 @@ $(document).ready(
                 {
                     // user entered a message
                     let message = $('#inputMessage').val();
-                    console.log(message);
+                    network.sendMessage(message);
                 }
             }
         );

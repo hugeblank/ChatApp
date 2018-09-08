@@ -84,7 +84,12 @@ class Server
         var id = String.fromCharCode(reader.readUInt8());
         offset++;
 
-        console.log(`Recieved id ${id}`);
+        switch(id)
+        {
+            case 't':
+                this.getChatMsg(msg, reader, offset);
+                break;
+        }
     }
 
     onCloseConn(code, reason)
@@ -100,6 +105,20 @@ class Server
         }
 
         this.tick++;
+    }
+
+    getChatMsg(msg, reader, offset)
+    {
+        let text = '';
+        let len = msg.byteLength;
+
+        for (let i = offset; i < len; i++)
+        {
+            let letter = String.fromCharCode(reader.readUInt8());
+            text += letter;
+        }
+
+        console.log(text);
     }
 }
 

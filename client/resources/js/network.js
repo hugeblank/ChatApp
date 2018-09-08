@@ -40,18 +40,17 @@ class Network {
         return new DataView(new ArrayBuffer(len));
     }
 
-    sendName()
+    sendMessage(data)
     {
-        let name = $('#usernameInput').val();
-        let len =  1 + name.length;
+        let len =  1 + data.length;
         let offset = 0;
   
         let msg = this.prepPacket(len);
         msg.setUint8(offset, 't'.charCodeAt(0));
         offset++;
   
-        for (var i = 0; i < name.length; i++) {
-            msg.setUint8(offset, name.charCodeAt(i));
+        for (var i = 0; i < data.length; i++) {
+            msg.setUint8(offset, data.charCodeAt(i));
             offset++;
         }
   
