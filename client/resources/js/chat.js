@@ -1,6 +1,8 @@
 $(document).ready(
     () =>
     {
+        window.network = new Network();
+
         $('#usernameInput').keypress(
             (e) =>
             {
@@ -11,7 +13,7 @@ $(document).ready(
                    console.log(name);
                    
                    $('#loginArea').fadeOut();
-                   $('#chatArea').fadeIn();
+                   network.initialize();
                }
             }
         );

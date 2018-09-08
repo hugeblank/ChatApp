@@ -68,10 +68,27 @@ class Server
         this.ws.on('connection', this.handleConnection.bind(this));
     }
 
-    handleConnection(conn)
+    handleConnection(client)
     {
-        let clientAddr = conn.upgradeReq.connection.remoteAddress;
-        Logger.info(`Got connection from address ${clientAddr}`);
+        this.ws.on('message', this.onMessage.bind(this));
+        this.ws.on('close', this.onCloseConn.bind(this));
+
+        Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
+    }
+
+    onMessage(msg)
+    {
+        var offset = 0;
+        var reader = new BinaryReader(msg);
+        var id = String.fromCharCode(reader.readUInt8());
+        offset++;
+
+        console.log('Recieved id: ' + id);
+    }
+
+    onCloseConn()
+    {
+
     }
 
     serverLoop()
