@@ -11,8 +11,7 @@ $(document).ready(
                    // user entered their name
                    let name = $('#usernameInput').val();
                    console.log(name);
-
-                   network.util.fadeOut('loginArea');
+                   
                    network.initialize();
                }
             }

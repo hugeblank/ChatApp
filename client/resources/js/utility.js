@@ -41,7 +41,18 @@ class Utility {
     postData(data)
     {
         let buffer = data.buffer;
-        this.network.socket.send(buffer);
+
+        if (this.checkSockState() == 1)
+        {
+            console.log(buffer);
+            this.network.socket.send(buffer);
+        }
+    }
+
+    checkSockState()
+    {
+        let state = this.network.socket.readyState; 
+        return state;
     }
 
 }

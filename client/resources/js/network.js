@@ -19,6 +19,7 @@ class Network {
 
     onOpen()
     {
+        this.util.fadeOut('loginArea');
         this.util.fadeIn('chatArea');
     }
 
@@ -33,13 +34,13 @@ class Network {
 
     reConn()
     {
-        if (this.socket.readyState == 1)
+        if (this.util.checkSockState() == 1)
         {
-            this.initialize();
+            this.onOpen();
         }
         else
         {
-            this.onOpen();
+            this.initialize();
         }
     }
 
