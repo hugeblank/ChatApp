@@ -20,6 +20,15 @@ class Network {
         $('#chatArea').fadeIn();
     }
 
+    onMessage(msg)
+    {
+        msg = new DataView(msg.data);
+        var offset = 0;
+        var id = String.fromCharCode(msg.getUint8(offset++));
+        
+        console.log("Got id: " + id);
+    }
+
     onError(e)
     {
         this.onClose(e, true);
