@@ -1,8 +1,10 @@
 class Network {
 
-    constructor()
+    constructor(parent)
     {
-      this.addr = `ws://127.0.0.1:8080`;
+        this.parent = parent;
+        this.addr = `ws://127.0.0.1:8080`;
+        this.util = new Utility(this.parent, this);
     }
 
     initialize()
@@ -17,7 +19,7 @@ class Network {
 
     onOpen()
     {
-        this.fadeIn('chatArea');
+        this.util.fadeIn('chatArea');
     }
 
     onMessage(msg)
@@ -58,40 +60,8 @@ class Network {
             console.log("Socket Error!");
         }
 
-        this.fadeOut('chatArea');
-        this.fadeIn('loginArea');
-    }
-
-    fadeIn(domId)
-    {
-        $(`#${domId}`).fadeIn();
-    }
-
-    fadeOut(domId)
-    {
-        $(`#${domId}`).fadeOut();
-    }
-
-    prepPacket(len)
-    {
-        return new DataView(new ArrayBuffer(len));
-    }
-
-    sendMessage(data)
-    {
-        let len =  1 + data.length;
-        let offset = 0;
-  
-        let msg = this.prepPacket(len);
-        msg.setUint8(offset, 't'.charCodeAt(0));
-        offset++;
-  
-        for (var i = 0; i < data.length; i++) {
-            msg.setUint8(offset, data.charCodeAt(i));
-            offset++;
-        }
-  
-        this.socket.send(msg.buffer);
+        this.util.fadeOut('chatArea');
+        this.util.fadeIn('loginArea');
     }
 
 }

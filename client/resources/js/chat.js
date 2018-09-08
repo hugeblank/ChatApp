@@ -1,7 +1,7 @@
 $(document).ready(
     () =>
     {
-        window.network = new Network();
+        window.network = new Network(this);
 
         $('#usernameInput').keypress(
             (e) =>
@@ -12,7 +12,7 @@ $(document).ready(
                    let name = $('#usernameInput').val();
                    console.log(name);
 
-                   network.fadeOut('loginArea');
+                   network.util.fadeOut('loginArea');
                    network.initialize();
                }
             }
@@ -25,7 +25,7 @@ $(document).ready(
                 {
                     // user entered a message
                     let message = $('#inputMessage').val();
-                    network.sendMessage(message);
+                    network.util.sendMessage(message);
                 }
             }
         );
