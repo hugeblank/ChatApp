@@ -34,8 +34,14 @@ class Utility {
             msg.setUint8(offset, data.charCodeAt(i));
             offset++;
         }
-  
-        this.socket.send(msg.buffer);
+
+        this.postData(msg);
+    }
+
+    postData(data)
+    {
+        let buffer = data.buffer;
+        this.network.socket.send(buffer);
     }
 
 }
