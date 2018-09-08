@@ -2,6 +2,8 @@ const os = require('os');
 const serverLoop = require('node-gameloop');
 const CommandHandler = require('../libcommand/src/CommandHandler');
 const WebSocket = require('ws');
+const BinaryReader = require('../libbinary/src/BinaryReader');
+const BinaryWriter = require('../libbinary/src/BinaryWriter');
 
 class Server
 {
@@ -64,15 +66,14 @@ class Server
 
     handleStart()
     {
-        Logger.print(`WebSocket Server started on port ${Config.Server.WebSocket.Port}`);
         this.ws.on('connection', this.handleConnection.bind(this));
+        this.ws.on('message', this.onMessage.bind(this));
+        this.ws.on('close', this.onCloseConn.bind(this));
+        Logger.print(`WebSocket Server started on port ${Config.Server.WebSocket.Port}`);
     }
 
     handleConnection(client)
     {
-        this.ws.on('message', this.onMessage.bind(this));
-        this.ws.on('close', this.onCloseConn.bind(this));
-
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
     }
 
@@ -83,12 +84,12 @@ class Server
         var id = String.fromCharCode(reader.readUInt8());
         offset++;
 
-        console.log('Recieved id: ' + id);
+        console.log(`Recieved id ${id}`);
     }
 
-    onCloseConn()
+    onCloseConn(code, reason)
     {
-
+        Logger.warn(`Client disconnected with code ${code}`);
     }
 
     serverLoop()

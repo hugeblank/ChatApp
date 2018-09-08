@@ -18,6 +18,7 @@ class Network {
     onOpen()
     {
         $('#chatArea').fadeIn();
+        this.sendName();
     }
 
     onMessage(msg)
@@ -26,12 +27,35 @@ class Network {
         var offset = 0;
         var id = String.fromCharCode(msg.getUint8(offset++));
         
-        console.log("Got id: " + id);
+        console.log(`Recieved id ${id}`);
     }
 
     onError(e)
     {
         this.onClose(e, true);
+    }
+
+    prepPacket(len)
+    {
+        return new DataView(new ArrayBuffer(len));
+    }
+
+    sendName()
+    {
+        let name = $('#usernameInput').val();
+        let len =  1 + name.length;
+        let offset = 0;
+  
+        let msg = this.prepPacket(len);
+        msg.setUint8(offset, 't'.charCodeAt(0));
+        offset++;
+  
+        for (var i = 0; i < name.length; i++) {
+            msg.setUint8(offset, name.charCodeAt(i));
+            offset++;
+        }
+  
+        this.socket.send(msg.buffer);
     }
 
 }
