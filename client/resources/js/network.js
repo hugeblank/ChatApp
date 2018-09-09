@@ -1,13 +1,11 @@
-class Network {
+class SocketConnection {
 
-    constructor(parent)
+    constructor()
     {
-        this.parent = parent;
         this.addr = `ws://127.0.0.1:8080`;
-        this.util = new Utility(this.parent, this);
     }
 
-    initialize()
+    generate()
     {
         this.socket = new WebSocket(this.addr);
         this.socket.binaryType = "arraybuffer";
@@ -15,6 +13,38 @@ class Network {
         this.socket.onerror = this.onError.bind(this);
         this.socket.onmessage = this.onMessage.bind(this);
         this.socket.onopen = this.onOpen.bind(this);
+    }
+
+    checkSockState()
+    {
+        let state = this.socket.readyState; 
+        return state;
+    }
+
+    postData(data)
+    {
+        let buffer = data.buffer;
+
+        if (this.checkSockState() == 1)
+        {
+            console.log(buffer);
+            this.socket.send(buffer);
+        }
+    }
+}
+
+
+class Network extends SocketConnection {
+
+    constructor()
+    {
+        super();
+        this.util = new Utility(this);
+    }
+
+    initialize()
+    {
+        super.generate();
     }
 
     onOpen()
@@ -34,7 +64,7 @@ class Network {
 
     reConn()
     {
-        if (this.util.checkSockState() == 1)
+        if (super.checkSockState() == 1)
         {
             this.onOpen();
         }
@@ -63,6 +93,11 @@ class Network {
 
         this.util.fadeOut('chatArea');
         this.util.fadeIn('loginArea');
+    }
+
+    send(data)
+    {
+        super.postData(data);
     }
 
 }

@@ -1,8 +1,7 @@
 class Utility {
 
-    constructor(parent, network)
+    constructor(network)
     {
-        this.parent = parent;
         this.network = network;
     }
 
@@ -35,24 +34,7 @@ class Utility {
             offset++;
         }
 
-        this.postData(msg);
-    }
-
-    postData(data)
-    {
-        let buffer = data.buffer;
-
-        if (this.checkSockState() == 1)
-        {
-            console.log(buffer);
-            this.network.socket.send(buffer);
-        }
-    }
-
-    checkSockState()
-    {
-        let state = this.network.socket.readyState; 
-        return state;
+        this.network.send(msg);
     }
 
 }
