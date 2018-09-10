@@ -81,8 +81,6 @@ class Server
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
 
         await user.negotiateName();
-
-        this.userBase.addUser(user);
     }
 
     serverLoop()
@@ -126,8 +124,10 @@ class Server
         }
 
         user.name = name;
+        this.userBase.addUser(user);
 
         Logger.info(`User ${user.id} is now named ${user.name}`);
+        
     }
 }
 
