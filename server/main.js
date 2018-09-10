@@ -101,20 +101,6 @@ class Server
     {
         return this.id++;
     }
-
-    getChatMsg(msg, reader, offset)
-    {
-        let text = '';
-        let len = msg.byteLength;
-
-        for (let i = offset; i < len; i++)
-        {
-            let letter = String.fromCharCode(reader.readUInt8());
-            text += letter;
-        }
-
-        Logger.info(`User ${this.id} says: ${text}`);
-    }
 }
 
 module.exports = Server;

@@ -30,6 +30,20 @@ class User {
         Logger.warn(`Client with id: ${this.id} disconnected with code ${code}`);
     }
 
+    getChatMsg(msg, reader, offset)
+    {
+        let text = '';
+        let len = msg.byteLength;
+
+        for (let i = offset; i < len; i++)
+        {
+            let letter = String.fromCharCode(reader.readUInt8());
+            text += letter;
+        }
+
+        Logger.info(`${this.name}: ${text}`);
+    }
+
     negotiateName()
     {
         let writer = new BinaryWriter();
