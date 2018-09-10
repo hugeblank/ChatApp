@@ -4,6 +4,8 @@ const CommandHandler = require('../libcommand/src/CommandHandler');
 const WebSocket = require('ws');
 const BinaryReader = require('../libbinary/src/BinaryReader');
 const BinaryWriter = require('../libbinary/src/BinaryWriter');
+const Userbase = require('./userbase');
+const User = require('./user');
 
 class Server
 {
@@ -21,6 +23,9 @@ class Server
 
         // Handlers
         this.commands = new CommandHandler(this);
+
+        // Managers
+        this.userBase = new Userbase();
 
     }
 
@@ -70,31 +75,13 @@ class Server
 
     handleConnection(client)
     {
-        client.on('message', this.onMessage.bind(this));
-        client.on('close', this.onCloseConn.bind(this));
+        let user = new User(this.getId(), client);
+        client.on('message', user.onMessage.bind(this));
+        client.on('close', user.onCloseConn.bind(this));
+
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
-    }
 
-    onMessage(msg)
-    {
-        Logger.info(`Got Message: ${msg}`);
-
-        var offset = 0;
-        var reader = new BinaryReader(msg);
-        var id = String.fromCharCode(reader.readUInt8());
-        offset++;
-
-        switch(id)
-        {
-            case 't':
-                this.getChatMsg(msg, reader, offset);
-                break;
-        }
-    }
-
-    onCloseConn(code, reason)
-    {
-        Logger.warn(`Client disconnected with code ${code}`);
+        this.userBase.addUser(user);
     }
 
     serverLoop()
@@ -105,6 +92,11 @@ class Server
         }
 
         this.tick++;
+    }
+
+    getId()
+    {
+        return this.id++;
     }
 
     getChatMsg(msg, reader, offset)
