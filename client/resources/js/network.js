@@ -27,7 +27,6 @@ class SocketConnection {
 
         if (this.checkSockState() == 1)
         {
-            console.log(buffer);
             this.socket.send(buffer);
         }
     }

@@ -13,8 +13,6 @@ class Server
 
     constructor(parent)
     {
-
-        // Create Bot
         this.parent = parent
 
         // Server Variables
@@ -27,7 +25,7 @@ class Server
     }
 
     /*
-    Starts the Bot
+    Starts the server
     */
 
     start()
@@ -58,7 +56,7 @@ class Server
     {
         this.ws = new WebSocket.Server(
             {
-                perMessageDeflate: false, 
+                perMessageDeflate: true, 
                 port: Config.Server.WebSocket.Port
             }, this.handleStart.bind(this)
         );
@@ -67,18 +65,20 @@ class Server
     handleStart()
     {
         this.ws.on('connection', this.handleConnection.bind(this));
-        this.ws.on('message', this.onMessage.bind(this));
-        this.ws.on('close', this.onCloseConn.bind(this));
         Logger.print(`WebSocket Server started on port ${Config.Server.WebSocket.Port}`);
     }
 
     handleConnection(client)
     {
+        client.on('message', this.onMessage.bind(this));
+        client.on('close', this.onCloseConn.bind(this));
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
     }
 
     onMessage(msg)
     {
+        Logger.info(`Got Message: ${msg}`);
+
         var offset = 0;
         var reader = new BinaryReader(msg);
         var id = String.fromCharCode(reader.readUInt8());
