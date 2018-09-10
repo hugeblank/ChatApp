@@ -15,6 +15,11 @@ class Utility {
         $(`#${domId}`).fadeOut();
     }
 
+    nameRegistered()
+    {
+        this.fadeIn('chatArea');
+    }
+
     prepPacket(len)
     {
         return new DataView(new ArrayBuffer(len));

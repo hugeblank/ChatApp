@@ -73,9 +73,13 @@ class Server
 
     async handleConnection(client)
     {
-        let user = new User(this.getId(), client);
+        let user = new User(this, this.getId(), client);
         client.binaryType = 'arraybuffer';
-        client.on('message', user.onMessage.bind(this));
+        client.on('message', (msg) =>
+            {
+                user.onMessage(msg);
+            }
+        );
         client.on('close', user.onCloseConn.bind(this));
 
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
@@ -110,24 +114,6 @@ class Server
         }
 
         Logger.info(`User ${this.id} says: ${text}`);
-    }
-
-    setName(user, msg, reader, offset)
-    {
-        let name = '';
-        let len = msg.byteLength;
-
-        for (let i = offset; i < len; i++)
-        {
-            let letter = String.fromCharCode(reader.readUInt8());
-            name += letter;
-        }
-
-        user.name = name;
-        this.userBase.addUser(user);
-
-        Logger.info(`User ${user.id} is now named ${user.name}`);
-        
     }
 }
 

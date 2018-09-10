@@ -49,7 +49,6 @@ class Network extends SocketConnection {
     onOpen()
     {
         this.util.fadeOut('loginArea');
-        this.util.fadeIn('chatArea');
     }
 
     onMessage(msg)
@@ -65,6 +64,9 @@ class Network extends SocketConnection {
             case 'n':
                 this.util.sendName();
                 break;
+            case 'r':
+                this.util.nameRegistered();
+                break
         }
     }
 

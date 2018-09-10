@@ -8,9 +8,10 @@ class Userbase {
     addUser(obj)
     {
         let uid = obj.id;
+        let name = obj.name;
         this.list.push(obj);
         
-        Logger.info(`Added ${uid} to list ${this.list[0]}`);
+        Logger.info(`Added user ${name}:${uid} to the base!`);
     }
 
 }

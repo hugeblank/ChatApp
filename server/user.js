@@ -1,7 +1,8 @@
 class User {
 
-    constructor(id, client)
+    constructor(parent, id, client)
     {
+        this.parent = parent;
         this.id = id;
         this.client = client;
     }
@@ -19,7 +20,7 @@ class User {
                 this.getChatMsg(msg, reader, offset);
                 break;
             case 'i':
-                this.setName(this, msg, reader, offset);
+                this.setName(msg, reader, offset);
                 break;
         }
     }
@@ -33,6 +34,30 @@ class User {
     {
         let writer = new BinaryWriter();
         writer.writeUInt8('n'.charCodeAt(0));
+
+        this.client.send(writer.toBuffer());
+    }
+
+    setName(msg, reader, offset)
+    {
+        let name = '';
+        let len = msg.byteLength;
+
+        for (let i = offset; i < len; i++)
+        {
+            let letter = String.fromCharCode(reader.readUInt8());
+            name += letter;
+        }
+
+        this.name = name;
+        this.parent.userBase.addUser(this); 
+        this.nameRegistered();
+    }
+
+    nameRegistered()
+    {
+        let writer = new BinaryWriter();
+        writer.writeUInt8('r'.charCodeAt(0));
 
         this.client.send(writer.toBuffer());
     }
