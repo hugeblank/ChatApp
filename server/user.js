@@ -48,9 +48,6 @@ class User {
     sendChat(name, text)
     {
         let packet = `${name}%${text}`;
-        
-        let encoded = Buffer.from(packet).toString('base64');
-        //console.log(encoded);
 
         let writer = new BinaryWriter();
         writer.writeUInt8('c'.charCodeAt(0));
