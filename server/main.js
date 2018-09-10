@@ -71,7 +71,7 @@ class Server
         Logger.print(`WebSocket Server started on port ${Config.Server.WebSocket.Port}`);
     }
 
-    handleConnection(client)
+    async handleConnection(client)
     {
         let user = new User(this.getId(), client);
         client.binaryType = 'arraybuffer';
@@ -79,6 +79,8 @@ class Server
         client.on('close', user.onCloseConn.bind(this));
 
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
+
+        await user.negotiateName();
 
         this.userBase.addUser(user);
     }
@@ -110,6 +112,22 @@ class Server
         }
 
         Logger.info(`User ${this.id} says: ${text}`);
+    }
+
+    setName(user, msg, reader, offset)
+    {
+        let name = '';
+        let len = msg.byteLength;
+
+        for (let i = offset; i < len; i++)
+        {
+            let letter = String.fromCharCode(reader.readUInt8());
+            name += letter;
+        }
+
+        user.name = name;
+
+        Logger.info(`User ${user.id} is now named ${user.name}`);
     }
 }
 

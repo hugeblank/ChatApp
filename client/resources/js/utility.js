@@ -20,13 +20,19 @@ class Utility {
         return new DataView(new ArrayBuffer(len));
     }
 
-    sendMessage(data)
+    sendName()
+    {
+        let name = window.userName;
+        this.sendMessage('i', name);
+    }
+
+    sendMessage(key, data)
     {
         let len =  1 + data.length;
         let offset = 0;
   
         let msg = this.prepPacket(len);
-        msg.setUint8(offset, 't'.charCodeAt(0));
+        msg.setUint8(offset, key.charCodeAt(0));
         offset++;
   
         for (var i = 0; i < data.length; i++) {

@@ -10,7 +10,7 @@ $(document).ready(
                {
                    // user entered their name
                    let name = $('#usernameInput').val();
-                   console.log(name);
+                   window.userName = name;
                    
                    network.initialize();
                }
@@ -24,7 +24,7 @@ $(document).ready(
                 {
                     // user entered a message
                     let message = $('#inputMessage').val();
-                    network.util.sendMessage(message);
+                    network.util.sendMessage('t', message);
                 }
             }
         );

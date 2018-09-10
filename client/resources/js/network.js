@@ -59,6 +59,13 @@ class Network extends SocketConnection {
         var id = String.fromCharCode(msg.getUint8(offset++));
         
         console.log(`Recieved id ${id}`);
+
+        switch (id)
+        {
+            case 'n':
+                this.util.sendName();
+                break;
+        }
     }
 
     reConn()
