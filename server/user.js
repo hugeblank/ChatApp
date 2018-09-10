@@ -42,6 +42,26 @@ class User {
         }
 
         Logger.info(`${this.name}: ${text}`);
+        this.sendChat(this.name, text);
+    }
+
+    sendChat(name, text)
+    {
+        let packet = `${name}%${text}`;
+        
+        let encoded = Buffer.from(packet).toString('base64');
+        //console.log(encoded);
+
+        let writer = new BinaryWriter();
+        writer.writeUInt8('c'.charCodeAt(0));
+
+        for (let i = 0; i < packet.length; i++)
+        {
+            let letter = packet.charCodeAt(i);
+            writer.writeUInt8(letter);
+        }
+
+        this.client.send(writer.toBuffer());
     }
 
     negotiateName()

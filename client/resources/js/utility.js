@@ -48,4 +48,28 @@ class Utility {
         this.network.send(msg);
     }
 
+    handleChat(msg, offset)
+    {
+        let chat = '';
+        for (let i = offset; i < msg.byteLength; i++)
+        {
+            let letter = String.fromCharCode(msg.getUint8(i));
+            chat += letter;
+        }
+
+        let userName = chat.substr(0, chat.indexOf('%'));
+        let text = chat.substr(chat.indexOf('%') + 1);
+
+        this.addChatBubble(userName, text);
+    }
+
+    addChatBubble(name, text)
+    {
+        let listElement = `<li class="message" style="display: list-item;">`;
+        listElement += `<span class="username" style="color: rgb(88, 220, 0);">${name}</span>`;
+        listElement += `<span class="messageBody">${text}</span>`;
+        listElement += `</li>`;
+        $('#messages').append(listElement);  
+    }
+
 }

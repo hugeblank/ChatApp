@@ -67,6 +67,9 @@ class Network extends SocketConnection {
             case 'r':
                 this.util.nameRegistered();
                 break
+            case 'c':
+                this.util.handleChat(msg, offset);
+                break;
         }
     }
 
