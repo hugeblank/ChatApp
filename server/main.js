@@ -74,6 +74,7 @@ class Server
     handleConnection(client)
     {
         let user = new User(this.getId(), client);
+        client.binaryType = 'arraybuffer';
         client.on('message', user.onMessage.bind(this));
         client.on('close', user.onCloseConn.bind(this));
 
@@ -108,7 +109,7 @@ class Server
             text += letter;
         }
 
-        console.log(text);
+        Logger.info(`User ${this.id} says: ${text}`);
     }
 }
 

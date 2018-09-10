@@ -8,8 +8,6 @@ class User {
 
     onMessage(msg)
     {
-        Logger.info(`Got Message: ${msg} from user id: ${this.id}`);
-
         var offset = 0;
         var reader = new BinaryReader(msg);
         var id = String.fromCharCode(reader.readUInt8());
