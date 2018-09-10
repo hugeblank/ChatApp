@@ -2,6 +2,8 @@
 global.Config   = require('./config/main.json');
 global.MainServer = require('./main');
 global.readline = require('readline');
+global.BinaryReader = require('../libbinary/src/BinaryReader');
+global.BinaryWriter = require('../libbinary/src/BinaryWriter');
 global.Logger   = require('../liblogger/src/Logger');
 global.Colors   = require('colors');
 global.rl       = readline.createInterface(

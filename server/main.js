@@ -2,8 +2,6 @@ const os = require('os');
 const serverLoop = require('node-gameloop');
 const CommandHandler = require('../libcommand/src/CommandHandler');
 const WebSocket = require('ws');
-const BinaryReader = require('../libbinary/src/BinaryReader');
-const BinaryWriter = require('../libbinary/src/BinaryWriter');
 const Userbase = require('./userbase');
 const User = require('./user');
 
