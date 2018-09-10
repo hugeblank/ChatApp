@@ -14,6 +14,11 @@ class Userbase {
         Logger.info(`Added user ${name}:${uid} to the base!`);
     }
 
+    getUsers()
+    {
+        return this.list
+    }
+
 }
 
 module.exports = Userbase;

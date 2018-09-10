@@ -40,8 +40,7 @@ class User {
             let letter = String.fromCharCode(reader.readUInt8());
             text += letter;
         }
-
-        Logger.info(`${this.name}: ${text}`);
+        
         this.sendChat(this.name, text);
     }
 
@@ -58,7 +57,13 @@ class User {
             writer.writeUInt8(letter);
         }
 
-        this.client.send(writer.toBuffer());
+        let userList = this.parent.userBase.getUsers();
+
+        userList.forEach((user) =>
+            {
+                user.client.send(writer.toBuffer());
+            }
+        );
     }
 
     negotiateName()
