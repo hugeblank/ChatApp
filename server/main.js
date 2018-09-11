@@ -59,7 +59,7 @@ class Server
     {
         this.ws = new WebSocket.Server(
             {
-                perMessageDeflate: true, 
+                perMessageDeflate: true,
                 port: Config.Server.WebSocket.Port
             }, this.handleStart.bind(this)
         );
@@ -75,12 +75,18 @@ class Server
     {
         let user = new User(this, this.getId(), client);
         client.binaryType = 'arraybuffer';
+        
         client.on('message', (msg) =>
             {
                 user.onMessage(msg);
             }
         );
-        client.on('close', user.onCloseConn.bind(this));
+        
+        client.on('close', (code, reason) =>
+            {
+                user.onCloseConn(code, reason);
+            }
+        );
 
         Logger.info(`Got connection from address ${client._socket.remoteAddress}`);
 

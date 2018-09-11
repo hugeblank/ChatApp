@@ -27,6 +27,7 @@ class User {
 
     onCloseConn(code, reason)
     {
+        this.parent.userBase.removeUser(this);
         Logger.warn(`Client with id: ${this.id} disconnected with code ${code}`);
     }
 

@@ -19,6 +19,15 @@ class Userbase {
         return this.list
     }
 
+    removeUser(obj)
+    {
+        let user = this.list.find(usr => usr.id === obj.id);
+        let userIndex = this.list.indexOf(user);
+        this.list.splice(userIndex, 1);
+
+        Logger.warn(`${user.name} has been removed from the user base!`);
+    }
+
 }
 
 module.exports = Userbase;
