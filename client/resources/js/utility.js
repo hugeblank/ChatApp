@@ -65,8 +65,13 @@ class Utility {
 
     addChatBubble(name, text)
     {
+        let ran = Math.round(0xffffff * Math.random());
+        let r = ran >> 16;
+        let g = ran >> 8 & 255;
+        let b = ran & 255;
+        
         let listElement = `<li class="message" style="display: list-item;">`;
-        listElement += `<span class="username" style="color: rgb(88, 220, 0);">${name}</span>`;
+        listElement += `<span class="username" style="color: rgb(${r}, ${g}, ${b});">${name}</span>`;
         listElement += `<span class="messageBody">${text}</span>`;
         listElement += `</li>`;
         $('#messages').append(listElement);  
