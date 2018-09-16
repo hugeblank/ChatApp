@@ -25,10 +25,13 @@ class Utility {
         return new DataView(new ArrayBuffer(len));
     }
 
-    sendName()
+    sendUser()
     {
         let name = window.userName;
-        this.sendMessage('i', name);
+        let color = window.userColor;
+        let msg = `${name}%${color}`;
+
+        this.sendMessage('i', msg);
     }
 
     sendMessage(key, data)
@@ -58,20 +61,16 @@ class Utility {
         }
 
         let userName = chat.substr(0, chat.indexOf('%'));
-        let text = chat.substr(chat.indexOf('%') + 1);
+        let color = chat.substr(chat.indexOf('%') + 1);
+        let text = color.substr(color.indexOf('%') + 1);
 
-        this.addChatBubble(userName, text);
+        this.addChatBubble(userName, color, text);
     }
 
-    addChatBubble(name, text)
-    {
-        let ran = Math.round(0xffffff * Math.random());
-        let r = ran >> 16;
-        let g = ran >> 8 & 255;
-        let b = ran & 255;
-        
+    addChatBubble(name, color, text)
+    { 
         let listElement = `<li class="message" style="display: list-item;">`;
-        listElement += `<span class="username" style="color: rgb(${r}, ${g}, ${b});">${name}</span>`;
+        listElement += `<span class="username" style="color: ${color};">${name}</span>`;
         listElement += `<span class="messageBody">${text}</span>`;
         listElement += `</li>`;
         $('#messages').append(listElement);  

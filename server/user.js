@@ -20,7 +20,7 @@ class User {
                 this.getChatMsg(msg, reader, offset);
                 break;
             case 'i':
-                this.setName(msg, reader, offset);
+                this.setDetails(msg, reader, offset);
                 break;
         }
     }
@@ -42,12 +42,12 @@ class User {
             text += letter;
         }
         
-        this.sendChat(this.name, text);
+        this.sendChat(this.name, this.color, text);
     }
 
-    sendChat(name, text)
+    sendChat(name, color, text)
     {
-        let packet = `${name}%${text}`;
+        let packet = `${name}%${color}%${text}`;
 
         let writer = new BinaryWriter();
         writer.writeUInt8('c'.charCodeAt(0));
@@ -75,18 +75,20 @@ class User {
         this.client.send(writer.toBuffer());
     }
 
-    setName(msg, reader, offset)
+    setDetails(msg, reader, offset)
     {
-        let name = '';
+        let data = '';
         let len = msg.byteLength;
 
         for (let i = offset; i < len; i++)
         {
             let letter = String.fromCharCode(reader.readUInt8());
-            name += letter;
+            data += letter;
         }
 
-        this.name = name;
+        this.name = data.substr(0, data.indexOf('%'));
+        this.color = data.substr(data.indexOf('%') + 1);
+
         this.parent.userBase.addUser(this); 
         this.nameRegistered();
     }

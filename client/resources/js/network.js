@@ -62,7 +62,7 @@ class Network extends SocketConnection {
         switch (id)
         {
             case 'n':
-                this.util.sendName();
+                this.util.sendUser();
                 break;
             case 'r':
                 this.util.nameRegistered();
