@@ -1,6 +1,11 @@
 {
     "Version": "0.1.0",
 
+    "Env":
+    {
+        "Dev": false
+    },
+
     "Server":
     {
         "Tick": 50,

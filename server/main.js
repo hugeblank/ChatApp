@@ -4,6 +4,8 @@ const CommandHandler = require('../libcommand/src/CommandHandler');
 const WebSocket = require('ws');
 const Userbase = require('./userbase');
 const User = require('./user');
+const fs = require('fs');
+const https = require('https');
 
 class Server
 {
@@ -57,12 +59,32 @@ class Server
 
     startSocketServer()
     {
-        this.ws = new WebSocket.Server(
-            {
-                perMessageDeflate: true,
-                port: Config.Server.WebSocket.Port
-            }, this.handleStart.bind(this)
-        );
+        if (Config.Env.Dev == false)
+        {
+            this.ws = new WebSocket.Server(
+                {
+                    perMessageDeflate: true,
+                    port: Config.Server.WebSocket.Port
+                }, this.handleStart.bind(this)
+            );
+        }
+        else
+        {
+            let secureServ = https.createServer(
+                {
+                    key: fs.readFileSync(process.env.KEY),
+                    cert: fs.readFileSync(process.env.CERT)
+                }
+            );
+
+            this.ws = new WebSocket.Server(
+                {
+                    server: secureServ,
+                    perMessageDeflate: true,
+                    port: Config.Server.WebSocket.Port
+                }, this.handleStart.bind(this)
+            );
+        }
     }
 
     handleStart()
