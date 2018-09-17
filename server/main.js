@@ -70,12 +70,17 @@ class Server
         }
         else
         {
+            let privateKey = fs.readFileSync(Config.Server.HTTPS.privKey, 'utf8');
+            let certificate = fs.readFileSync(Config.Server.HTTPS.chainKey, 'utf8');
+            
             let secureServ = https.createServer(
                 {
-                    key: fs.readFileSync(process.env.KEY),
-                    cert: fs.readFileSync(process.env.CERT)
+                    key: privateKey,
+                    cert: certificate
                 }
             );
+
+            secureServ.listen(Config.Server.HTTPS.Port);
 
             this.ws = new WebSocket.Server(
                 {

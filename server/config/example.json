@@ -10,7 +10,19 @@
     {
         "Tick": 50,
         "LogMessages": true,
-        "Prefix": "-"
+        "Prefix": "-",
+
+        "WebSocket":
+        {
+            "Port": 8080
+        },
+
+        "HTTPS":
+        {
+            "Port": 8443,
+            "PrivateKey": "",
+            "ChainKey": ""
+        }
     },
     
     "Logger":
