@@ -70,8 +70,8 @@ class Server
         }
         else
         {
-            let privateKey = fs.readFileSync(Config.Server.HTTPS.privKey, 'utf8');
-            let certificate = fs.readFileSync(Config.Server.HTTPS.chainKey, 'utf8');
+            let privateKey = fs.readFileSync(Config.Server.HTTPS.PrivateKey, 'utf8');
+            let certificate = fs.readFileSync(Config.Server.HTTPS.ChainKey, 'utf8');
             
             let secureServ = https.createServer(
                 {
