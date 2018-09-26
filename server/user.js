@@ -41,13 +41,14 @@ class User {
             let letter = String.fromCharCode(reader.readUInt8());
             text += letter;
         }
-        
-        this.sendChat(this.name, this.color, text);
+        let time = (new Date()).toJSON().slice(0, 19).replace(/[-T]/g, ':') // From a comment on this stackoverflow https://stackoverflow.com/a/16426519/7854423
+
+        this.sendChat(this.name, this.color, text, time);
     }
 
-    sendChat(name, color, text)
+    sendChat(name, color, text, time)
     {
-        let packet = `${name}%${color}%${text}`;
+        let packet = `${name}\0${color}\0${time}\0${text}\0`;
 
         let writer = new BinaryWriter();
         writer.writeUInt8('c'.charCodeAt(0));
@@ -86,10 +87,15 @@ class User {
             data += letter;
         }
 
-        this.name = data.substr(0, data.indexOf('%'));
-        this.color = data.substr(data.indexOf('%') + 1);
+        let params = [];
+        while (data.indexOf('\0') > -1) {
+            params[params.length] = data.substr(0, data.indexOf('\0')); // Get the split parsed parameter
+            data = data.substr( (params[params.length-1].length + 1), (data.length) - (params[params.length-1].length + 1) ); // Get the remaining unparsed data
+        }
+        this.name = params[0];
+        this.color = params[1];
 
-        this.parent.userBase.addUser(this); 
+        this.parent.userBase.addUser(this);
         this.nameRegistered();
     }
 
